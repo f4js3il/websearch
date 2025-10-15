@@ -2,7 +2,11 @@ spring:
   application:
     name: websearch
   ai:
-    openai:
-      api-key: ${OPENAI_API_KEY}
+    anthropic:
+      api-key: ${ANTHROPIC_API_KEY}
+      chat:
+        options:
+          max-tokens: 500
+          tool-names: web_search
 server:
   port: 10002
