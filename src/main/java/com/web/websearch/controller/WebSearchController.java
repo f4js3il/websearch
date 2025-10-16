@@ -22,8 +22,4 @@ public class WebSearchController {
         return ResponseEntity.ok(webSearchService.search(query));
     }
 
-    @GetMapping("/best/restaurants")
-    public ResponseEntity<String> bestRestaurants(@RequestParam String cuisine, @RequestParam String  city, @RequestParam  String state ) {
-        return ResponseEntity.ok(webSearchService.getBestRestaurants(cuisine,city,state));
-    }
 }

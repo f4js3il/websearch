@@ -1,40 +1,17 @@
 package com.web.websearch.service;
 
-import com.web.websearch.payload.AnthropicResponse;
-import com.web.websearch.payload.Content;
+
 import com.web.websearch.payload.UserResponse;
 import com.web.websearch.repository.ClaudeRepository;
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.messages.Message;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.anthropic.api.AnthropicApi;
-import org.springframework.ai.anthropic.AnthropicChatModel;
-import org.springframework.ai.anthropic.AnthropicChatOptions;
-import org.springframework.ai.anthropic.api.AnthropicApi.ChatCompletionRequest.ThinkingConfig;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+
 
 
 @Service
 public class WebSearchService {
     private final static String API_KEY = System.getenv("ANTHROPIC_API_KEY");
-
-    private final AnthropicChatOptions anthropicChatOptions = AnthropicChatOptions
-                                                        .builder()
-                                                        .model("claude-sonnet-4-5-20250929")
-                                                        .maxTokens(500)
-                                                        .build();
-    private final AnthropicChatModel anthropicChatModel = AnthropicChatModel
-                                                    .builder().anthropicApi(AnthropicApi.builder().apiKey(API_KEY).build())
-                                                    .defaultOptions(anthropicChatOptions)
-                                                    .build();
-    private final ChatClient chatClient= ChatClient.builder(anthropicChatModel).build();
-
     private final ClaudeRepository claudeRepository;
 
     public WebSearchService(ClaudeRepository claudeRepository) {
@@ -80,11 +57,5 @@ public class WebSearchService {
 
     }
 
-    public String getBestRestaurants(String cuisine, String city, String state) {
-        ThinkingConfig webSearchOptions = new ThinkingConfig(AnthropicApi.ThinkingType.ENABLED, null);
-        AnthropicChatOptions openAiChatOptions = AnthropicChatOptions.builder().thinking(webSearchOptions).build();
-        return chatClient.prompt(new Prompt("Provide me best restaurants for " + cuisine ))
-                .options(openAiChatOptions).call().content();
-    }
 
 }
